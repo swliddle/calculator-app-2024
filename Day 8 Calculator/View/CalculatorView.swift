@@ -16,9 +16,7 @@ struct CalculatorView: View {
         static let displayFontSize = 90.0
     }
 
-    var calculatorViewModel: CalculatorViewModel
-
-    @State private var playSound: Bool = false
+    @Bindable var calculatorViewModel: CalculatorViewModel
 
     var body: some View {
         GeometryReader { geometry in
@@ -27,7 +25,10 @@ struct CalculatorView: View {
                     .fill(.black)
                     .ignoresSafeArea(.all)
                 VStack(alignment: .trailing, spacing: DrawingConstants.buttonSpacing) {
-                    Toggle("Play sound", isOn: $playSound)
+                    Toggle(
+                        "Play sound",
+                        isOn: $calculatorViewModel.preferences.soundIsEnabled
+                    )
                         .foregroundStyle(.white)
                     Spacer()
                     Text("1,000")
@@ -41,7 +42,6 @@ struct CalculatorView: View {
                             } else {
                                 CalculatorButton(
                                     buttonSpec: buttonSpec,
-                                    playSound: playSound,
                                     size: geometry.size,
                                     calculatorViewModel: calculatorViewModel
                                 )

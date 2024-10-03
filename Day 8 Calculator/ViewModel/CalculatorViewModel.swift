@@ -11,14 +11,19 @@ import Foundation
 
     // MARK: - Properties
 
+    var preferences = Preferences()
+
+    private var calculatorModel = CalculatorBrain()
     private var soundPlayer = SoundPlayer()
 
     // MARK: - Model access
 
     // MARK: - User intents
 
-    func clickButton() {
-        soundPlayer.playSound(named: "Click2.m4a")
+    func handleButtonTap(for buttonSpec: ButtonSpec) {
+        if preferences.soundIsEnabled {
+            soundPlayer.playSound(named: "Click2.m4a")
+        }
     }
 
     // MARK: - Helpers

@@ -16,17 +16,12 @@ struct CalculatorButton: View {
     }
 
     let buttonSpec: ButtonSpec
-    let playSound: Bool
     let size: CGSize
     let calculatorViewModel: CalculatorViewModel
 
     var body: some View {
         Button {
-            if playSound {
-                calculatorViewModel.clickButton()
-            }
-
-            // NEEDSWORK: take some action with this button
+            calculatorViewModel.handleButtonTap(for: buttonSpec)
         } label: {
             ZStack {
                 RoundedRectangle(cornerRadius: cornerRadius(for: size))
@@ -40,7 +35,6 @@ struct CalculatorButton: View {
                     .foregroundStyle(buttonSpec.type.foregroundColor)
             }
         }
-
     }
 
     func buttonSize(for size: CGSize, spanWidth: Int) -> CGFloat {
