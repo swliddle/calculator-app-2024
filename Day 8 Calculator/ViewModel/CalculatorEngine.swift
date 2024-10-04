@@ -1,5 +1,5 @@
 //
-//  CalculatorViewModel.swift
+//  CalculatorEngine.swift
 //  Day 8 Calculator
 //
 //  Created by Stephen Liddle on 9/26/24.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-@Observable class CalculatorViewModel {
+@Observable class CalculatorEngine {
 
     // MARK: - Constants
 
@@ -23,7 +23,7 @@ import Foundation
 
     var preferences = Preferences()
 
-    private var calculatorModel = CalculatorBrain()
+    private var calculator = CalculatorBrain()
     private var decimalFormatter = NumberFormatter()
     private var scientificFormatter = NumberFormatter()
     private var soundPlayer = SoundPlayer()
@@ -42,7 +42,7 @@ import Foundation
     // MARK: - Model access
 
     var activeSymbol: OperationSymbol? {
-        calculatorModel.pendingSymbol
+        calculator.pendingSymbol
     }
 
     var clearSymbol: String {
@@ -56,9 +56,9 @@ import Foundation
     var displayText: String {
         if let text = textBeingEdited {
             text
-        } else if let value = calculatorModel.accumulator {
+        } else if let value = calculator.accumulator {
             formatted(number: value)
-        } else if let value = calculatorModel.pendingLeftOperand {
+        } else if let value = calculator.pendingLeftOperand {
             formatted(number: value)
         } else {
             Constants.errorDisplayText
@@ -100,15 +100,15 @@ import Foundation
 
     private func handleClearTap() {
         if isClear {
-            calculatorModel.setAccumulator(nil)
+            calculator.setAccumulator(nil)
 
-            if calculatorModel.pendingLeftOperand != nil {
+            if calculator.pendingLeftOperand != nil {
                 textBeingEdited = nil
             } else {
                 textBeingEdited = Constants.defaultDisplayText
             }
         } else {
-            calculatorModel.clearAll()
+            calculator.clearAll()
             textBeingEdited = Constants.defaultDisplayText
         }
     }
@@ -130,13 +130,13 @@ import Foundation
         }
 
         if let updatedText = textBeingEdited {
-            calculatorModel.setAccumulator(Double(updatedText))
+            calculator.setAccumulator(Double(updatedText))
         }
     }
 
     private func handleOperationTap(symbol: OperationSymbol) {
-        if calculatorModel.accumulator != nil {
-            calculatorModel.performOperation(symbol)
+        if calculator.accumulator != nil {
+            calculator.performOperation(symbol)
             textBeingEdited = nil
         }
     }

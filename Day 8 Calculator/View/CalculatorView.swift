@@ -16,7 +16,7 @@ struct CalculatorView: View {
         static let displayFontSize = 90.0
     }
 
-    @Bindable var calculatorViewModel: CalculatorViewModel
+    @Bindable var calculator: CalculatorEngine
 
     var body: some View {
         GeometryReader { geometry in
@@ -36,14 +36,14 @@ struct CalculatorView: View {
             VStack(alignment: .trailing) {
                 Toggle(
                     "Play sound",
-                    isOn: $calculatorViewModel.preferences.soundIsEnabled
+                    isOn: $calculator.preferences.soundIsEnabled
                 )
                 .foregroundStyle(.white)
                 Spacer()
-                Text(calculatorViewModel.displayText)
+                Text(calculator.displayText)
                     .font(
                         systemFont(
-                            for: calculatorViewModel.displayText,
+                            for: calculator.displayText,
                             thatFits: geometry.size.width - DrawingConstants.buttonSpacing * 2,
                             desiredSize: Constants.displayFontSize
                         )
@@ -63,7 +63,7 @@ struct CalculatorView: View {
                     CalculatorButton(
                         buttonSpec: buttonSpec,
                         size: geometry.size,
-                        calculatorViewModel: calculatorViewModel
+                        calculator: calculator
                     )
                 }
             }

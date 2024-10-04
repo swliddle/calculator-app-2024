@@ -17,11 +17,11 @@ struct CalculatorButton: View {
 
     let buttonSpec: ButtonSpec
     let size: CGSize
-    let calculatorViewModel: CalculatorViewModel
+    let calculator: CalculatorEngine
 
     var body: some View {
         Button {
-            calculatorViewModel.handleButtonTap(for: buttonSpec)
+            calculator.handleButtonTap(for: buttonSpec)
         } label: {
             ZStack {
                 RoundedRectangle(cornerRadius: cornerRadius(for: size))
@@ -38,7 +38,7 @@ struct CalculatorButton: View {
     }
 
     private var backgroundColor: Color {
-        buttonSpec.symbol == calculatorViewModel.activeSymbol
+        buttonSpec.symbol == calculator.activeSymbol
             ? buttonSpec.type.foregroundColor
             : buttonSpec.type.backgroundColor
     }
@@ -62,7 +62,7 @@ struct CalculatorButton: View {
     }
 
     private var foregroundColor: Color {
-        buttonSpec.symbol == calculatorViewModel.activeSymbol
+        buttonSpec.symbol == calculator.activeSymbol
             ? buttonSpec.type.backgroundColor
             : buttonSpec.type.foregroundColor
     }
@@ -73,7 +73,7 @@ struct CalculatorButton: View {
 
     private var symbolString: String {
         if buttonSpec.symbol == .clear {
-            calculatorViewModel.clearSymbol
+            calculator.clearSymbol
         } else {
             buttonSpec.symbol.rawValue
         }
