@@ -15,6 +15,7 @@ import Foundation
         static let decimal = OperationSymbol.decimal.rawValue
         static let defaultDisplayText = OperationSymbol.zero.rawValue
         static let errorDisplayText = "Error"
+        static let largeThreshold = 1_000_000_000.0
         static let maximumFractionDigits = 8
     }
 
@@ -24,6 +25,7 @@ import Foundation
 
     private var calculatorModel = CalculatorBrain()
     private var decimalFormatter = NumberFormatter()
+    private var scientificFormatter = NumberFormatter()
     private var soundPlayer = SoundPlayer()
     private var textBeingEdited: String? = Constants.defaultDisplayText
 
@@ -32,6 +34,9 @@ import Foundation
     init() {
         decimalFormatter.numberStyle = .decimal
         decimalFormatter.maximumFractionDigits = Constants.maximumFractionDigits
+
+        scientificFormatter.numberStyle = .scientific
+        scientificFormatter.maximumFractionDigits = Constants.maximumFractionDigits
     }
 
     // MARK: - Model access
@@ -86,7 +91,11 @@ import Foundation
     // MARK: - Private helpers
 
     private func formatted(number: Double) -> String {
-        decimalFormatter.string(from: NSNumber(value: number)) ?? Constants.errorDisplayText
+        formatter(for: number).string(from: NSNumber(value: number)) ?? Constants.errorDisplayText
+    }
+
+    private func formatter(for value: Double) -> NumberFormatter {
+        value > Constants.largeThreshold ? scientificFormatter : decimalFormatter
     }
 
     private func handleClearTap() {
