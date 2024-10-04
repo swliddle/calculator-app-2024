@@ -30,7 +30,7 @@ struct CalculatorButton: View {
                         width: buttonSize(for: size, spanWidth: buttonSpec.type.spanWidth),
                         height: buttonSize(for: size, spanWidth: 1)
                     )
-                Text(buttonSpec.symbol.rawValue)
+                Text(symbolString)
                     .font(displayFont(for: size))
                     .foregroundStyle(foregroundColor)
             }
@@ -69,5 +69,13 @@ struct CalculatorButton: View {
 
     private func minimum(_ size: CGSize) -> CGFloat {
         min(size.width, size.height)
+    }
+
+    private var symbolString: String {
+        if buttonSpec.symbol == .clear {
+            calculatorViewModel.clearSymbol
+        } else {
+            buttonSpec.symbol.rawValue
+        }
     }
 }
