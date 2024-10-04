@@ -15,6 +15,8 @@ import Foundation
         static let decimal = OperationSymbol.decimal.rawValue
         static let defaultDisplayText = OperationSymbol.zero.rawValue
         static let errorDisplayText = "Error"
+        static let largeThreshold = 1_000_000_000.0
+        static let maxmimumFractionDigits = 8
     }
 
     // MARK: - Properties
@@ -22,18 +24,34 @@ import Foundation
     var preferences = Preferences()
 
     private var calculatorModel = CalculatorBrain()
+    private var decimalFormatter = NumberFormatter()
+    private var scientificFormatter = NumberFormatter()
     private var soundPlayer = SoundPlayer()
     private var textBeingEdited: String? = Constants.defaultDisplayText
 
+    // MARK: - Initialization
+
+    init() {
+        decimalFormatter.numberStyle = .decimal
+        decimalFormatter.maximumFractionDigits = Constants.maxmimumFractionDigits
+
+        scientificFormatter.numberStyle = .scientific
+        scientificFormatter.maximumFractionDigits = Constants.maxmimumFractionDigits
+    }
+
     // MARK: - Model access
+
+    var activeSymbol: OperationSymbol? {
+        calculatorModel.pendingSymbol
+    }
 
     var displayText: String {
         if let text = textBeingEdited {
             text
         } else if let value = calculatorModel.accumulator {
-            "\(value)"
+            formatted(number: value)
         } else if let value = calculatorModel.pendingLeftOperand {
-            "\(value)"
+            formatted(number: value)
         } else {
             Constants.errorDisplayText
         }
@@ -63,6 +81,14 @@ import Foundation
     }
 
     // MARK: - Private helpers
+
+    private func formatted(number: Double) -> String {
+        formatter(for: number).string(from: NSNumber(value: number)) ?? Constants.errorDisplayText
+    }
+
+    private func formatter(for value: Double) -> NumberFormatter {
+        value > Constants.largeThreshold ? scientificFormatter : decimalFormatter
+    }
 
     private func handleClearTap() {
     }
