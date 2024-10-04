@@ -40,6 +40,14 @@ import Foundation
         calculatorModel.pendingSymbol
     }
 
+    var clearSymbol: String {
+        if isClear {
+            OperationSymbol.clear.rawValue
+        } else {
+            OperationSymbol.allClear.rawValue
+        }
+    }
+
     var displayText: String {
         if let text = textBeingEdited {
             text
@@ -82,7 +90,18 @@ import Foundation
     }
 
     private func handleClearTap() {
+        if isClear {
+            calculatorModel.setAccumulator(nil)
 
+            if calculatorModel.pendingLeftOperand != nil {
+                textBeingEdited = nil
+            } else {
+                textBeingEdited = Constants.defaultDisplayText
+            }
+        } else {
+            calculatorModel.clearAll()
+            textBeingEdited = Constants.defaultDisplayText
+        }
     }
 
     private func handleNumericTap(digit: String) {
@@ -110,6 +129,14 @@ import Foundation
         if calculatorModel.accumulator != nil {
             calculatorModel.performOperation(symbol)
             textBeingEdited = nil
+        }
+    }
+
+    private var isClear: Bool {
+        if let text = textBeingEdited, text != Constants.defaultDisplayText {
+            true
+        } else {
+            false
         }
     }
 }
