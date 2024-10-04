@@ -12,8 +12,9 @@ import Foundation
     // MARK: - Constants
 
     private struct Constants {
+        static let decimal = OperationSymbol.decimal.rawValue
         static let defaultDisplayText = OperationSymbol.zero.rawValue
-        static let errorDisplay = "Error"
+        static let errorDisplayText = "Error"
     }
 
     // MARK: - Properties
@@ -29,8 +30,12 @@ import Foundation
     var displayText: String {
         if let text = textBeingEdited {
             text
+        } else if let value = calculatorModel.accumulator {
+            "\(value)"
+        } else if let value = calculatorModel.pendingLeftOperand {
+            "\(value)"
         } else {
-            Constants.errorDisplay
+            Constants.errorDisplayText
         }
     }
 
@@ -60,16 +65,33 @@ import Foundation
     // MARK: - Private helpers
 
     private func handleClearTap() {
-
     }
 
     private func handleNumericTap(digit: String) {
         if let text = textBeingEdited {
-            textBeingEdited = text + digit
+            if digit == Constants.decimal && text.contains(digit) {
+                // Ignore extra tap on decimal button
+                return
+            }
+
+            if digit != Constants.decimal && text == Constants.defaultDisplayText {
+                textBeingEdited = digit
+            } else {
+                textBeingEdited = text + digit
+            }
+        } else {
+            textBeingEdited = digit
+        }
+
+        if let updatedText = textBeingEdited {
+            calculatorModel.setAccumulator(Double(updatedText))
         }
     }
 
     private func handleOperationTap(symbol: OperationSymbol) {
-
+        if calculatorModel.accumulator != nil {
+            calculatorModel.performOperation(symbol)
+            textBeingEdited = nil
+        }
     }
 }

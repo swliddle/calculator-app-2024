@@ -56,5 +56,5 @@ struct CalculatorView: View {
 }
 
 //#Preview {
-//    CalculatorView()
+//    CalculatorView(calculatorViewModel: CalculatorViewModel())
 //}

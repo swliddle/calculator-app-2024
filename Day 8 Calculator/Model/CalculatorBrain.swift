@@ -47,6 +47,14 @@ struct CalculatorBrain {
     var accumulator: Double? = 0
     private var pendingOperation: PendingBinaryOperation?
 
+    var pendingLeftOperand: Double? {
+        pendingOperation?.leftOperand
+    }
+
+    var pendingSymbol: OperationSymbol? {
+        pendingOperation?.symbol
+    }
+
     // MARK: - Helpers
 
     mutating func clearAccumulator() {
