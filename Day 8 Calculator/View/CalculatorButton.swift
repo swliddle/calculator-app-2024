@@ -26,14 +26,14 @@ struct CalculatorButton: View {
             ZStack {
                 RoundedRectangle(cornerRadius: cornerRadius(for: size))
                     .fill(backgroundColor)
-                    .frame(
-                        width: buttonSize(for: size, spanWidth: buttonSpec.type.spanWidth),
-                        height: buttonSize(for: size, spanWidth: 1)
-                    )
                 Text(symbolString)
                     .font(displayFont(for: size))
                     .foregroundStyle(foregroundColor)
             }
+            .frame(
+                width: buttonSize(for: size, spanWidth: buttonSpec.type.spanWidth),
+                height: buttonSize(for: size, spanWidth: 1)
+            )
         }
     }
 
@@ -54,7 +54,7 @@ struct CalculatorButton: View {
     }
 
     private func cornerRadius(for size: CGSize) -> CGFloat {
-        minimum(size) / Constants.cornerCount * Constants.scaleFactor
+        minimum(size) / 2
     }
 
     private func displayFont(for size: CGSize) -> Font {

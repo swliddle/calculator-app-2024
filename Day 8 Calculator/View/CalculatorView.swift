@@ -8,7 +8,7 @@
 import SwiftUI
 
 let columnCount = 4
-let gridItems = Array<GridItem>(repeating: .init(.flexible()), count: columnCount)
+let gridItems = Array<GridItem>(repeating: .init(.flexible(), spacing: DrawingConstants.buttonSpacing), count: columnCount)
 
 struct CalculatorView: View {
 
@@ -25,7 +25,7 @@ struct CalculatorView: View {
                     accumulatorBody
                     buttonGrid(for: geometry)
                 }
-                .padding(.leading, DrawingConstants.buttonSpacing)
+                .padding(DrawingConstants.buttonSpacing)
             }
             .background(.black)
         }
@@ -44,12 +44,11 @@ struct CalculatorView: View {
                     .font(
                         systemFont(
                             for: calculator.displayText,
-                            thatFits: geometry.size.width - DrawingConstants.buttonSpacing * 2,
+                            thatFits: geometry.size.width,
                             desiredSize: Constants.displayFontSize
                         )
                     )
                     .foregroundStyle(.white)
-                    .padding(.trailing, DrawingConstants.buttonSpacing)
             }
         }
     }
