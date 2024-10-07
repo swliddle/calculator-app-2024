@@ -8,7 +8,7 @@
 import SwiftUI
 
 let columnCount = 4
-let gridItems = Array<GridItem>(repeating: .init(.flexible()), count: columnCount)
+let gridItems = Array<GridItem>(repeating: .init(.flexible(), spacing: DrawingConstants.buttonSpacing), count: columnCount)
 
 struct CalculatorView: View {
 
@@ -16,7 +16,7 @@ struct CalculatorView: View {
         static let displayFontSize = 90.0
     }
 
-    @Bindable var calculatorViewModel: CalculatorViewModel
+    @Bindable var calculator: CalculatorEngine
 
     var body: some View {
         GeometryReader { geometry in
@@ -25,7 +25,7 @@ struct CalculatorView: View {
                     accumulatorBody
                     buttonGrid(for: geometry)
                 }
-                .padding(.leading, DrawingConstants.buttonSpacing)
+                .padding(DrawingConstants.buttonSpacing)
             }
             .background(.black)
         }
@@ -36,20 +36,19 @@ struct CalculatorView: View {
             VStack(alignment: .trailing) {
                 Toggle(
                     "Play sound",
-                    isOn: $calculatorViewModel.preferences.soundIsEnabled
+                    isOn: $calculator.preferences.soundIsEnabled
                 )
                 .foregroundStyle(.white)
                 Spacer()
-                Text(calculatorViewModel.displayText)
+                Text(calculator.displayText)
                     .font(
                         systemFont(
-                            for: calculatorViewModel.displayText,
-                            thatFits: geometry.size.width - DrawingConstants.buttonSpacing * 2,
+                            for: calculator.displayText,
+                            thatFits: geometry.size.width,
                             desiredSize: Constants.displayFontSize
                         )
                     )
                     .foregroundStyle(.white)
-                    .padding(.trailing, DrawingConstants.buttonSpacing)
             }
         }
     }
@@ -63,7 +62,7 @@ struct CalculatorView: View {
                     CalculatorButton(
                         buttonSpec: buttonSpec,
                         size: geometry.size,
-                        calculatorViewModel: calculatorViewModel
+                        calculator: calculator
                     )
                 }
             }
@@ -71,6 +70,6 @@ struct CalculatorView: View {
     }
 }
 
-#Preview {
-    CalculatorView(calculatorViewModel: CalculatorViewModel())
-}
+//#Preview {
+//    CalculatorView(calculatorViewModel: CalculatorViewModel())
+//}

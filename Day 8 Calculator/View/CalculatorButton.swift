@@ -10,35 +10,34 @@ import SwiftUI
 struct CalculatorButton: View {
     private struct Constants {
         static let columnCount = 4.0
-        static let cornerCount = 2 * columnCount
         static let fontScaleFactor = 0.1
         static let scaleFactor = 0.8
     }
 
     let buttonSpec: ButtonSpec
     let size: CGSize
-    let calculatorViewModel: CalculatorViewModel
+    let calculator: CalculatorEngine
 
     var body: some View {
         Button {
-            calculatorViewModel.handleButtonTap(for: buttonSpec)
+            calculator.handleButtonTap(for: buttonSpec)
         } label: {
             ZStack {
                 RoundedRectangle(cornerRadius: cornerRadius(for: size))
                     .fill(backgroundColor)
-                    .frame(
-                        width: buttonSize(for: size, spanWidth: buttonSpec.type.spanWidth),
-                        height: buttonSize(for: size, spanWidth: 1)
-                    )
                 Text(symbolString)
                     .font(displayFont(for: size))
                     .foregroundStyle(foregroundColor)
             }
+            .frame(
+                width: buttonSize(for: size, spanWidth: buttonSpec.type.spanWidth),
+                height: buttonSize(for: size, spanWidth: 1)
+            )
         }
     }
 
     private var backgroundColor: Color {
-        buttonSpec.symbol == calculatorViewModel.activeSymbol
+        buttonSpec.symbol == calculator.activeSymbol
             ? buttonSpec.type.foregroundColor
             : buttonSpec.type.backgroundColor
     }
@@ -54,7 +53,7 @@ struct CalculatorButton: View {
     }
 
     private func cornerRadius(for size: CGSize) -> CGFloat {
-        minimum(size) / Constants.cornerCount * Constants.scaleFactor
+        minimum(size) / 2
     }
 
     private func displayFont(for size: CGSize) -> Font {
@@ -62,7 +61,7 @@ struct CalculatorButton: View {
     }
 
     private var foregroundColor: Color {
-        buttonSpec.symbol == calculatorViewModel.activeSymbol
+        buttonSpec.symbol == calculator.activeSymbol
             ? buttonSpec.type.backgroundColor
             : buttonSpec.type.foregroundColor
     }
@@ -73,7 +72,7 @@ struct CalculatorButton: View {
 
     private var symbolString: String {
         if buttonSpec.symbol == .clear {
-            calculatorViewModel.clearSymbol
+            calculator.clearSymbol
         } else {
             buttonSpec.symbol.rawValue
         }
