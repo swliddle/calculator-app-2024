@@ -99,7 +99,7 @@ struct CalculatorBrain {
 
     // MARK: - Private helpers
 
-    mutating func performPendingOperation() {
+    private mutating func performPendingOperation() {
         if let pendingOperation, let accumulator {
             self.accumulator = pendingOperation.perform(with: accumulator)
             self.pendingOperation = nil

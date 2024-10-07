@@ -9,7 +9,7 @@ import Foundation
 import AVFoundation
 
 struct SoundPlayer {
-    var player: AVAudioPlayer?
+    private var player: AVAudioPlayer?
 
     mutating func playSound(named soundName: String) async {
         guard let path = Bundle.main.path(forResource: soundName, ofType: nil) else {

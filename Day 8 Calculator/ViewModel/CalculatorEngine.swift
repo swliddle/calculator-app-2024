@@ -24,8 +24,8 @@ import Foundation
     var preferences = Preferences()
 
     private var calculator = CalculatorBrain()
-    private var decimalFormatter = NumberFormatter()
-    private var scientificFormatter = NumberFormatter()
+    private let decimalFormatter = NumberFormatter()
+    private let scientificFormatter = NumberFormatter()
     private var soundPlayer = SoundPlayer()
     private var textBeingEdited: String? = Constants.defaultDisplayText
 

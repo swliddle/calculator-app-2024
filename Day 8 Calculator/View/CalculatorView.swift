@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-let columnCount = 4
-let gridItems = Array<GridItem>(repeating: .init(.flexible(), spacing: DrawingConstants.buttonSpacing), count: columnCount)
+private let columnCount = 4
+private let gridItems = Array<GridItem>(repeating: .init(.flexible(), spacing: DrawingConstants.buttonSpacing), count: columnCount)
 
 struct CalculatorView: View {
 
